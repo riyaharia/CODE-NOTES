@@ -1,1 +1,1 @@
-# This is my personal learning journal while mastering
+# This is my personal learning journal 
