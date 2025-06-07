@@ -63,8 +63,11 @@ CREATE TABLE enrollments (
     PRIMARY KEY (student_id, course_id)
 );
 
-- - -
-## Candidate Key
-Any column or set of columns that can uniquely identify each row in a table.
+---
 
-They’re called “candidates” because they are eligible to be the Primary Key — but only one gets chosen.
+## Candidate Key
+
+A **Candidate Key** is any **column or set of columns** that can **uniquely identify each row** in a table.
+
+They’re called **"candidates"** because they are **eligible to become the Primary Key** — but only one gets chosen. The rest remain as **alternate unique identifiers**.
+
