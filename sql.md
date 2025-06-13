@@ -272,11 +272,178 @@ WHERE Employment_Type IN ('contract', 'part-time');
 
 ✅ `IN` is preferred when checking a column against multiple values
 
+- - -
 
+# SQL Concepts, Queries & Examples
 
+## 1. Filtering with WHERE + IN
 
+### Ratings 1, 2, 3 from `deliveries` table:
+```sql
+SELECT * FROM deliveries
+WHERE Delivery_ratings IN (1, 2, 3);
+```
 
+### Employees in IT, HR, Sales departments:
+```sql
+SELECT * FROM employee_data
+WHERE Department IN ('IT', 'SALES', 'HR');
+```
 
+### Orders delivered to customers from Branch 7, 9, 18:
+```sql
+SELECT * FROM orders_info
+WHERE Delivery_Y_N = 'Y'
+  AND Branch_ID IN (7, 9, 18);
+```
 
+---
 
+## 2. Wildcards in SQL (LIKE)
 
+| Wildcard | Meaning                             | Example                                |
+|----------|-------------------------------------|----------------------------------------|
+| `%`      | Matches zero or more characters     | `'A%'` → matches 'A', 'Apple', 'Android' |
+| `_`      | Matches exactly one character       | `'J_n'` → matches 'Jan', 'Jon', 'Jen'    |
+
+### Example: Find pizzas with 'Veg' in name
+```sql
+SELECT color, calorie
+FROM pizza
+WHERE Pizza_Name LIKE '%Veg%';
+```
+
+---
+
+## 3. Aggregations
+
+### SUM
+```sql
+SELECT SUM(income_amount) FROM incomes;
+```
+
+### Using Alias with Aggregation
+```sql
+SELECT SUM(income_amt) AS total_income FROM table;
+```
+
+### COUNT
+```sql
+SELECT COUNT(person_name) FROM expenses;
+```
+
+### AVG
+```sql
+SELECT AVG(expense_amount) FROM expenses;
+```
+
+### MAX & MIN
+```sql
+SELECT MAX(expense_amount), MIN(expense_amount) FROM expenses;
+```
+
+---
+
+## 4. LeetCode Example Query
+
+> Report movies with an odd-numbered ID and a description not equal to "boring", ordered by rating descending.
+
+```sql
+SELECT * FROM Cinema
+WHERE MOD(id, 2) = 1
+  AND description != 'boring'
+ORDER BY rating DESC;
+```
+
+---
+
+## 5. GROUP BY
+
+### Example: Total spent by expense type
+```sql
+SELECT expense_type,
+       SUM(expense_amount) AS total_spent
+FROM expense
+GROUP BY expense_type;
+```
+
+### Average asset cost per status
+```sql
+SELECT asset_status,
+       AVG(asset_cost) AS avg_cost
+FROM assets
+GROUP BY asset_status;
+```
+
+### Total, Average, and Count per asset type
+```sql
+SELECT asset_type,
+       SUM(asset_cost) AS TOTAL_COST,
+       AVG(asset_cost) AS AVG_COST,
+       COUNT(asset_cost) AS NO_OF
+FROM assets
+GROUP BY asset_type;
+```
+
+### Campaign data per marketing channel
+```sql
+SELECT Channel,
+       COUNT(campaign_spend) AS NO_OF,
+       SUM(campaign_spend) AS TOTAL_SPEND,
+       AVG(campaign_spend) AS AVG_SPEND
+FROM marketing_campaigns
+GROUP BY Channel;
+```
+
+### Campaign data per marketing format
+```sql
+SELECT Campaign_format,
+       COUNT(campaign_spend) AS NO_OF,
+       SUM(campaign_spend) AS TOTAL_SPEND,
+       AVG(campaign_spend) AS AVG_SPEND
+FROM marketing_campaigns
+GROUP BY Campaign_format;
+```
+
+---
+
+## 6. ORDER BY
+
+### Average cost per asset status in ascending order
+```sql
+SELECT asset_status,
+       AVG(asset_cost) AS avg_cost
+FROM assets
+GROUP BY asset_status
+ORDER BY avg_cost ASC;
+```
+
+### Total/Avg/Count per asset type, sorted
+```sql
+SELECT asset_type,
+       SUM(asset_cost) AS TOTAL_COST,
+       AVG(asset_cost) AS AVG_COST,
+       COUNT(asset_cost) AS NO_OF
+FROM assets
+GROUP BY asset_type
+ORDER BY TOTAL_COST, AVG_COST, NO_OF;
+```
+
+---
+
+## 7. WHERE vs HAVING
+
+| Clause  | Use Case                    |
+|---------|-----------------------------|
+| WHERE   | Non-aggregated fields       |
+| HAVING  | Aggregated fields + GROUP BY|
+
+### Example: Average salary for active Part-time and Contract employees
+```sql
+SELECT Employment_Type,
+       AVG(Current_Annual_Cost)
+FROM employee_data
+WHERE Employee_Employment_status = 'active'
+GROUP BY Employment_Type
+HAVING Employment_Type IN ('Part-time', 'Contract');
+```
